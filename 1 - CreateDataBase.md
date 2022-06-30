@@ -219,4 +219,11 @@ SELECT SUM(salary) FROM studentrecord          # Display sum of salaries
 ```
 SELECT AVG(salary) FROM studentrecord          # Display average of salary
 ```
+### UPDATE table
+```
+UPDATE studentrecord
+SET name = "Ahmed", age = 20
+WHERE name = "Zain Azam";
+```
+
 
