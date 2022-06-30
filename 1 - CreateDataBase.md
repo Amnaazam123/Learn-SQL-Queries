@@ -155,5 +155,68 @@ WHERE id BETWEEN 1 AND 3
 SELECT * FROM studentrecord
 WHERE id NOT BETWEEN 1 AND 3   
 ```
+## LIKE operator
+```
+SELECT * FROM studentrecord
+WHERE name LIKE "A%"         # "%" sign represents zero, one or multiple characters.
+```
+```
+SELECT * FROM studentrecord
+WHERE name LIKE "__n%"      # where name has n at third position, there are 2 characters before 'n' and after n there may b 0 or multiple characters.
+```
 
+## ORDER BY and DISTINCT property
+```
+SELECT * FROM studentrecord
+ORDER BY name DESC           # By default id it ASC	
+```
+```
+SELECT * FROM studentrecord
+ORDER BY name, age DESC      #if name has same order then order the results on the base of age coloumn
+```
+If you want to print all unique data of ONE COLOUMN(unique entries/unique cells of one coloumn), You will use DISTINCT.
+```
+SELECT DISTINCT gender FROM studentrecord          # F, M	
+```
+## IS NULL and IS NOT NULL
+```
+SELECT name FROM studentrecord
+WHERE gender IS NULL              #show record where gender is not provided by student.
+```
+```
+SELECT name FROM studentrecord
+WHERE gender IS NOT NULL              #show record where gender is provided by student.
+```
+## LIMIT
+To display number of first rows.
+```
+SELECT * FROM studentrecord
+LIMIT 3                               # Display first 3 rows.
+```
+```
+SELECT * FROM studentrecord
+LIMIT 2,8           # display 8 rows from third row (after first 2 rows)
+```
+## Aggregate Functions
+### COUNT
+```
+SELECT COUNT(name) FROM studentrecord          # how many records/rows you have for name.
+SELECT COUNT(*) FROM studentrecord             # Display count of rows
+```
+### MAX
+```
+SELECT MAX(salary),name FROM studentrecord          # Display maximum salary with his name
+```
+### MIN
+```
+SELECT MIN(salary),name FROM studentrecord          # Display min salary with his name
+```
+### SUM
+```
+SELECT SUM(salary) FROM studentrecord          # Display sum of salaries
+```
+### MAX
+```
+SELECT AVG(salary) FROM studentrecord          # Display average of salary
+```
 
