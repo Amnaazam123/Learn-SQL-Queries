@@ -47,6 +47,11 @@ Method-2: Run following query
 ```
 SELECT * FROM student; 
 ```
+
+## View structure of table
+```
+DESCRIBE myTable;
+```
 ## CREATE Rows in table
 Once you create a row or table or database, do not re-run that command.<br> 
 If you do not provide any value for any cell, it will put *NULL* there.
@@ -168,7 +173,7 @@ WHERE name LIKE "__n%"      # where name has n at third position, there are 2 ch
 ## ORDER BY and DISTINCT property
 ```
 SELECT * FROM studentrecord
-ORDER BY name DESC           # By default id it ASC	
+ORDER BY name DESC             # By default id it ASC	
 ```
 ```
 SELECT * FROM studentrecord
@@ -225,5 +230,204 @@ UPDATE studentrecord
 SET name = "Ahmed", age = 20
 WHERE name = "Zain Azam";
 ```
+## Commit and Rollback
+Whenever you use Rollback command it removes all insert, update and delete commands whichever your have used. To save these commands you user commit. Where you use commit command, it saves all the CRUD commands before Commit, but after that rollback works and removes all update, create or delete commnad.
+```
+UPDATE studentrecord
+SET name = "Arooj Fatima"
+WHERE name = "Amna Azam";
+SELECT * FROM studentrecord
+
+COMMIT;
+
+UPDATE studentrecord
+SET name = "Ahmed"
+WHERE name = "Zain Azam";
+SELECT * FROM studentrecord
+
+ROLLBACK;
+
+UPDATE studentrecord
+SET name = "Azam Ali"
+WHERE name = "Zain Azam";
+
+SELECT * FROM studentrecord
+
+```
+# Delete any row from table
+```
+DELETE FROM studentrecord 
+Where id = 3
+
+# To delete all rows from table
+DELETE FROM studentrecord
+```
+## PRIMARY Key
+- Primary key has non-null and unique data.
+- One table can have primary key constraint on only one coloumn.
+
+```
+CREATE TABLE myTable(
+	id int UNIQUE NOT NULL AUTO_INCREMENT,
+    name varchar(50),
+    age int NOT NULL,
+    PRIMARY KEY(id)
+);
+```
+If you have created table:
+```
+ALTER TABLE studentrecord
+ADD PRIMARY KEY(id);
+```
+## FOREIGN KEY
+- Foreign key is used to link 2 tables.
+- Foreign key in first table contains all those values that exist in second table's primary key.
+- One table can have multiple foreign keys.
+
+![image](https://user-images.githubusercontent.com/71166016/176756566-3499dbf0-3d01-499b-b135-f4c427712171.png)
+
+```
+CREATE TABLE myTable(
+	id int UNIQUE NOT NULL AUTO_INCREMENT,
+    name varchar(50),
+    age int NOT NULL,
+    city int NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(city) REFERENCES city(cid) 
+);
+```
+If you haver created table:
+```
+ALTER TABLE myTable
+ADD FOREIGN KEY(city) REFERENCES City(cid)
+```
+## How to decide which table should contain FK and which table should not?
+###### Hints
+- aik - To be repeated (Should be separated, should not comtain FK) 
+- multiple - unique data (should contain FK and PK)
+## INNER JOIN
+It shows all those rows of both table where Foreign key and Primary Key get equal.
+```
+SELECT 	P.id, P.name, P.percentage, P.gender, C.cityName
+FROM personaltable AS P
+INNER JOIN citytable AS C
+ON P.city = C.id
+WHERE C.cityName = "Lahore"
+```
+ 
+## LEFT JOIN
+It shows all the records Where both tables get equal and first table record where they are not equal. Since it is not possible to have such rows in first table which are not in second table. So firstly, you delete foreign key constraint and then you can insert such value in coloumn which is not in primary key of first table. In that case You get *NULL* values in second table.
+###### How to delete Foreign key constraint?
+
+![image](https://user-images.githubusercontent.com/71166016/176823538-93423ab6-6089-4bbb-bd67-f0ecc6fdb2c0.png)
+![image](https://user-images.githubusercontent.com/71166016/176823579-2591769d-2183-4f3e-9ebd-095f9cd5581f.png)
+![image](https://user-images.githubusercontent.com/71166016/176823607-ddcf3154-ea82-40b5-bc2b-c60a6bdbcf54.png)
+
+After these steps, you can insert values in FK coloumn which do not belogn to second table's PK.
+
+![image](https://user-images.githubusercontent.com/71166016/176823477-473b7746-aa39-46dc-8b55-2d869a2e60bc.png)
+
+
+
+```
+SELECT *
+FROM personaltable AS P
+LEFT JOIN citytable AS C
+ON P.city = C.id
+```
+## RIGHT JOIN
+It shows all the records Where both tables get equal and second table record where they are not equal.
+
+![image](https://user-images.githubusercontent.com/71166016/176823187-9e108e96-4bec-490c-87d7-70b21af8c0c8.png)
+
+## CROSS JOIN
+Here You do not need to have foreign key in one table and primary key in second table to link those tables.
+
+![image](https://user-images.githubusercontent.com/71166016/176823811-d7c4590b-d2e6-4282-930a-57966579d3fc.png)
+
+```
+SELECT *
+FROM personaltable
+CROSS JOIN citytable
+```
+## JOIN multiple tables
+```
+# Suppose You have three tables table1, table2 and table3.
+# table1 has two foreign keys for table2 and table3.
+# You want to display data against foreign keys
+
+SELECT *
+FROM table1
+INNER JOIN table2
+ON table1.foreignkey1 = table2.primaryKey
+INNER JOIN table3
+ON table1.foreignkey2 = table3.primaryKey
+
+```
+## GROUP BY and HAVING
+GROUP BY statement groups records against common values in coloumn and returns one record for each group(Here you apply aggregate function on each group).
+
+![image](https://user-images.githubusercontent.com/71166016/176830931-a26eb15a-18ea-410f-8eb8-85f593a3699d.png)
+```
+# PUCIT, pharmacy, PUCAD, ART etc are some departments
+# in which different teachers teach at different salaries.
+# you have to display the name of that teacher which has
+# MAX salary in his department.
+
+SELECT MAX(teacher_Salary)
+FROM employee_table
+GROUP BY department_Name
+```
+```
+# KIS KIS CITY SE KITNY STUDENTS ATAY HEN?
+SELECT COUNT(S.name) 
+FROM studentTable AS S
+INNER JOIN cityTable AS C
+ON S.city = C.cid
+GROUP BY C.city
+```
+```
+# Aik manager has multiple employees. You have to display 
+# count of empolyees against each Manager.
+
+SELECT COUNT(E.EmployeeName)
+FROM EmplyeeTable AS E
+INNER JOIN ManagerTable AS M
+ON E.Mid = M.id
+GROUP BY M.ManagerName  
+
+```
+###### HAVING
+It applies condition on aggregate function (output of grouped result).
+
+![image](https://user-images.githubusercontent.com/71166016/176860060-57800623-12de-45fe-be47-eb724e7e38ee.png)
+```
+SELECT AVG(S.Fees) 
+FROM studentTable AS S
+INNER JOIN cityTable AS C
+ON S.city = C.cid
+GROUP BY C.city
+HAVING AVG(S.Fees)>5000;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
