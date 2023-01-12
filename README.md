@@ -323,8 +323,8 @@ ADD FOREIGN KEY(city) REFERENCES City(cid)
 ```
 ## How to decide which table should contain FK and which table should not?
 ###### Hints
-- aik - To be repeated (Should be separated, should not comtain FK) 
-- multiple - unique data (should contain FK and PK)
+- flan cheez has flan cheez.
+- flan cheez belongs to flan cheez.(FK)
 ## INNER JOIN
 It shows all those rows of both table where Foreign key and Primary Key get equal.
 ```
