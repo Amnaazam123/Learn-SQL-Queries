@@ -225,6 +225,25 @@ SELECT SUM(salary) FROM studentrecord          # Display sum of salaries
 ```
 SELECT AVG(salary) FROM studentrecord          # Display average of salary
 ```
+### ANY
+It is used for comparison. it is different from IN operator. IN operator is only used for equality but ANY operator can be used with any type of logical operator.
+```
+SELECT *
+FROM employee
+WHERE salary > ANY (2000, 3000, 4000);        # where salary>2000 or >3000 or >4000
+```
+```
+SELECT *
+FROM employee
+WHERE salary IN (2000, 3000, 4000);         # where salary ==2000 or ==3000 or ==4000
+```
+### ALL 
+returns TRUE if ALL of the subquery values meet the condition.
+```
+SELECT *
+FROM employee
+WHERE salary > ALL (2000, 3000, 4000);        # where salary>2000 and >3000 and >4000
+```
 ### UPDATE table
 ```
 UPDATE studentrecord
