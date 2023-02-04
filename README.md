@@ -430,3 +430,91 @@ GROUP BY C.city
 HAVING AVG(S.Fees)>5000;
 ```
 
+## Indexing
+By using indexes we can rapidly speed up queries. let suppose you have 1M records in table then any query will take from 4 to 5 seconds to execute but by creating indexes, this query can run only in few miliseconds. These indexes just work like indexes in book (which help in finding any topic fastly). Creating index may take time in few mintues.
+
+##### Before creating any index:
+```
+# this query will execute in 4 to 5 seconds.
+
+SELECT COUNT(*)
+FROM tableName
+WHERE firstName="Amna"
+
+```
+##### After creating any index:
+```
+CREATE INDEX firstName_idx
+ON tableName(firstName)
+
+# now this query will take few mili seconds to execute because we have created index against firstName coloumn.
+SELECT COUNT(*)
+FROM tableName
+WHERE firstName="Amna"
+```
+
+### Key:
+Key is one of the attributes of table
+
+### Candidate key(UNIQUE)
+The key which will contain different values(UNIQUE values) in one coloumn. These candidate keys are not enough to identify unique record(bcz it can be null)
+
+### Primary key(UNIQUE + NOT NULL)
+The candidate key which will be UNIQUE + NOT NULL, will be called primary key. Each PK is CC but Each CC is not primary key.
+
+### Super key(CANDIDATE KEY + Any key)
+Super set of candidate key is Super key. Candidate key(may call it super key(minimal)) can uniquely identify any row but when you add any key(s) with it, it become Super key. 
+### Composite key
+when you use two coloumns to uniquely indentify your records, it is called composite. When two coloumns are treated as primary key it is called composite key.
+```
+CREATE TABLE Person(
+	firstName VARCHAR(50),
+	lastName VARCHAR(50),
+	.
+	.
+	.
+	.
+	PRIMARY KEY(firstName,lastName)
+)
+
+```
+
+### Normalization:
+Normalization in SQL is the process of organizing data in a relational database to minimize data redundancy and improve data integrity.
+There is two level redundancy:
+- Row level
+- Coloumn Leve;
+### Row level:
+Row level redundancy can be removed using PK. 
+
+### Coloumn level:
+Coloumn level redundancy can introduce three types of errors:
+- Insertion anomoly 
+- deletion anomoly
+- updation anomoly
+###### Insertion anomoly: 
+For example you have one table in which you have student and his course with SID and CID, Univesirty has introduced a new course but you cannot add it in table because you have PK student ID but you have no any student. 
+
+###### Deletion anomoly: 
+For example you have one table in which you have student and his course with SID and CID, You have to delet student with S1D=2, but removing only student info will remove all his course info as well.
+
+###### Updation anomoly: 
+For example you have one table in which you have student and his course with SID and CID, When you will try to update only one cell it will update all those cells which will fill that criteria.
+
+### 1NF: 
+First Normal Form (1NF) in SQL is the first step in the normalization process. It requires that each column in a table contain only atomic values.
+![image](https://user-images.githubusercontent.com/71166016/216785823-1790b354-971f-4159-a601-8a9472f091b6.png)
+
+After following 1NF:
+
+![image](https://user-images.githubusercontent.com/71166016/216785871-7368b5e2-90b7-4167-b10d-a9298397cbb3.png)
+
+
+### 2NF:
+Table should be in first normal form.
+All the non prime attributes should be fully dependent on the primary key/There should be no partial dependency in table/The non prime attribute(location) should not be the part of the candidate key(storeID). If non prime attribute is determined by part of the candidate, it is called partial dependency.
+
+![image](https://user-images.githubusercontent.com/71166016/216789599-a9ecb8e1-241f-4b30-9707-3a093842a739.png)
+
+### 3NF:  
+All non prime attributes must be dependent on the primary key and not on each other.
