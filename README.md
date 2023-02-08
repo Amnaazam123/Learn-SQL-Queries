@@ -1,4 +1,4 @@
-# Learn SQL Queries 😪
+# Learn SQL Queries
 
 Database is used to create multiple tables which help in storing data. First you create Database, then you create your table, then you define your coloumn names and their data types. After that you can filter your results applying multiple queries.
 
